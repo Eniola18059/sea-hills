@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — SEA-BLUE HILLS Integrated Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #001F3F;
+      --accent: #007BFF;
+      --accent-dark: #0056b3;
+      --accent-glow: rgba(0,123,255,0.25);
+      --bg: #000000;
+      --card-bg: #0d0d0d;
+      --border: #1a1a1a;
+      --border-light: #252525;
+      --text: #E0E0E0;
+      --text-muted: #808080;
+      --wa: #25D366;
+      --nav-h: 80px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* ===== NAVBAR ===== */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: var(--nav-h); padding: 0 4rem; display: flex; align-items: center; justify-content: space-between; transition: background 0.3s, border-color 0.3s; border-bottom: 1px solid transparent; }
+    nav.scrolled { background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); border-color: var(--border); }
+    .nav-logo { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+    .nav-logo-icon { width: 44px; height: 44px; border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
+    .nav-logo-icon::before { content: ''; position: absolute; inset: 3px; background: var(--accent); opacity: 0.1; }
+    .nav-logo-icon svg { width: 22px; height: 22px; fill: var(--accent); position: relative; }
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .nav-logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 3px; color: #fff; }
+    .nav-logo-main span { color: var(--accent); }
+    .nav-logo-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 0.6rem; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; position: relative; transition: color 0.2s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 100%; height: 1px; background: var(--accent); transition: right 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-links a:hover::after, .nav-links a.active::after { right: 0; }
+    .nav-cta { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #fff !important; background: var(--accent); border: 1.5px solid var(--accent); padding: 0.6rem 1.5rem; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+    .nav-cta:hover { background: var(--accent-dark) !important; border-color: var(--accent-dark); transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    /* HAMBURGER */
+    .nav-mobile-toggle { display: none; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 8px; z-index: 1100; width: 40px; height: 40px; border: 1px solid var(--border-light); background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); transition: border-color 0.2s; flex-shrink: 0; }
+    .nav-mobile-toggle:hover { border-color: var(--accent); }
+    .nav-mobile-toggle span { display: block; width: 20px; height: 1.5px; background: #fff; margin: 0 auto; transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), opacity 0.25s; transform-origin: center; }
+    .nav-mobile-toggle.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-mobile-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-mobile-toggle.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* MOBILE DRAWER */
+    .mobile-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1040; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+    .mobile-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .mobile-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(320px, 85vw); background: #080808; border-left: 1px solid var(--border); z-index: 1050; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23,1,0.32,1); display: flex; flex-direction: column; padding: 6rem 2.5rem 3rem; box-shadow: -20px 0 60px rgba(0,0,0,0.6); overflow-y: auto; }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .mobile-nav-links li { border-bottom: 1px solid var(--border); }
+    .mobile-nav-links a { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s, padding-left 0.2s; }
+    .mobile-nav-links a::after { content: '→'; color: var(--accent); font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; }
+    .mobile-nav-links a:hover { color: #fff; padding-left: 0.5rem; }
+    .mobile-nav-links a:hover::after { opacity: 1; }
+    .mobile-drawer-cta { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .mobile-drawer-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .mobile-contact-item { display: flex; align-items: center; gap: 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; color: var(--text-muted); }
+    .mobile-contact-item svg { width: 14px; height: 14px; fill: var(--accent); flex-shrink: 0; }
+    .mobile-contact-item a { color: rgba(224,224,224,0.6); text-decoration: none; }
+    .mobile-drawer-btn { margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--wa); color: #fff; padding: 0.9rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+    .mobile-drawer-btn:hover { background: #1da851; }
+    .mobile-drawer-btn svg { width: 18px; height: 18px; fill: #fff; }
+
+    /* ===== PAGE HERO ===== */
+    .page-hero { padding-top: var(--nav-h); min-height: 55vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .page-hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,31,63,0.98) 0%, rgba(0,0,0,0.85) 65%, rgba(0,123,255,0.06) 100%), url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80') center/cover no-repeat; }
+    .page-hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,123,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,123,255,0.04) 1px, transparent 1px); background-size: 60px 60px; }
+    .page-hero-content { position: relative; z-index: 2; width: 100%; padding: 5rem 4rem; }
+    .breadcrumb { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { color: var(--accent); }
+    .page-hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .page-hero-eyebrow::before { content: ''; display: inline-block; width: 40px; height: 1px; background: var(--accent); }
+    .page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 8vw, 6.5rem); line-height: 0.93; letter-spacing: 2px; color: #fff; margin-bottom: 1.8rem; }
+    .page-hero h1 em { font-style: normal; color: var(--accent); display: block; }
+    .page-hero-desc { font-size: 1.1rem; color: rgba(224,224,224,0.75); max-width: 640px; line-height: 1.85; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* BUTTONS */
+    .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent); color: #fff; padding: 1rem 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 2px solid var(--accent); transition: background 0.2s, transform 0.2s, box-shadow 0.2s; }
+    .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 10px 30px var(--accent-glow); }
+    .btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; color: #fff; padding: 1rem 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 2px solid rgba(255,255,255,0.2); transition: border-color 0.2s, transform 0.2s, background 0.2s; }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.6); transform: translateY(-2px); background: rgba(255,255,255,0.04); }
+    .btn-wa { background: var(--wa); border-color: var(--wa); }
+    .btn-wa:hover { background: #1da851 !important; border-color: #1da851; }
+
+    /* TICKER */
+    .ticker-wrap { background: var(--accent); padding: 0.75rem 0; overflow: hidden; white-space: nowrap; }
+    .ticker-track { display: inline-flex; animation: ticker 25s linear infinite; }
+    .ticker-track:hover { animation-play-state: paused; }
+    .ticker-item { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.9); padding: 0 3rem; display: inline-flex; align-items: center; gap: 1rem; }
+    .ticker-item::after { content: '✦'; font-size: 0.5rem; opacity: 0.6; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* COMMON */
+    .section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::before { content: ''; display: inline-block; width: 30px; height: 1px; background: var(--accent); }
+    .section-label.center { justify-content: center; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; letter-spacing: 1px; color: #fff; margin-bottom: 1.5rem; }
+    .section-title.center { text-align: center; }
+    .section-sub { color: var(--text-muted); font-size: 0.95rem; line-height: 1.85; max-width: 680px; }
+    .section-sub.center { margin: 0 auto; text-align: center; }
+
+    /* WHO WE ARE */
+    .who-section { padding: 7rem 4rem; background: var(--bg); }
+    .who-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .who-text p { font-size: 1rem; line-height: 1.9; color: var(--text); margin-bottom: 1.5rem; }
+    .who-text p:last-child { color: var(--text-muted); }
+    .pillars-card { background: var(--card-bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 3rem; }
+    .pillars-card h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #fff; margin-bottom: 2rem; }
+    .pillar-item { display: flex; flex-direction: column; gap: 0.3rem; padding: 1.2rem 0; border-bottom: 1px solid var(--border); }
+    .pillar-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .pillar-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+    .pillar-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* VISION MISSION */
+    .vm-section { padding: 7rem 4rem; background: var(--card-bg); border-top: 1px solid var(--border); }
+    .vm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin-top: 4rem; }
+    .vm-card { background: var(--bg); padding: 4rem 3.5rem; position: relative; overflow: hidden; }
+    .vm-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--accent); }
+    .vm-card-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+    .vm-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 2px; color: #fff; margin-bottom: 1.5rem; line-height: 1; }
+    .vm-card p { font-size: 1rem; line-height: 1.9; color: var(--text-muted); }
+    .vm-card p strong { color: var(--text); font-weight: 500; }
+    .vm-big-letter { position: absolute; top: 1rem; right: 2rem; font-family: 'Bebas Neue', sans-serif; font-size: 8rem; color: rgba(0,123,255,0.04); line-height: 1; pointer-events: none; letter-spacing: 4px; }
+
+    /* VALUES */
+    .values-section { padding: 7rem 4rem; background: var(--primary); position: relative; overflow: hidden; }
+    .values-section::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0,123,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,123,255,0.04) 1px, transparent 1px); background-size: 50px 50px; }
+    .values-inner { position: relative; z-index: 1; }
+    .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(0,123,255,0.1); margin-top: 4rem; }
+    .value-card { background: rgba(0,15,35,0.9); padding: 3rem 2.5rem; position: relative; overflow: hidden; transition: background 0.3s; }
+    .value-card:hover { background: rgba(0,20,50,0.95); }
+    .value-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .value-card:hover::after { transform: scaleX(1); }
+    .value-icon { font-size: 2rem; margin-bottom: 1.5rem; }
+    .value-card h4 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; color: #fff; margin-bottom: 0.8rem; }
+    .value-accent { display: block; width: 30px; height: 2px; background: var(--accent); margin-bottom: 1rem; }
+    .value-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+
+    /* JOURNEY */
+    .journey-section { padding: 7rem 4rem; background: var(--bg); }
+    .journey-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; }
+    .journey-left { position: sticky; top: calc(var(--nav-h) + 2rem); }
+    .journey-status-badge { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1.5rem; padding: 0.6rem 1.2rem; background: rgba(0,123,255,0.08); border: 1px solid rgba(0,123,255,0.25); font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .journey-timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 2rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); position: relative; }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-marker { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; }
+    .timeline-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border-light); flex-shrink: 0; margin-top: 4px; transition: border-color 0.3s, background 0.3s; }
+    .timeline-item:hover .timeline-dot { border-color: var(--accent); background: var(--accent); }
+    .timeline-line { width: 1px; flex: 1; background: var(--border); margin-top: 4px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-content { flex: 1; }
+    .timeline-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .timeline-content h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #fff; margin-bottom: 0.6rem; }
+    .timeline-content p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+
+    /* CTA */
+    .cta-section { position: relative; background: var(--primary); padding: 8rem 4rem; overflow: hidden; text-align: center; }
+    .cta-section::before { content: 'BUILD'; position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: 22rem; color: rgba(0,123,255,0.035); top: 50%; left: 50%; transform: translate(-50%,-50%); white-space: nowrap; pointer-events: none; letter-spacing: 10px; }
+    .cta-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,123,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,123,255,0.03) 1px, transparent 1px); background-size: 50px 50px; }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 6vw, 5.5rem); color: #fff; letter-spacing: 2px; margin-bottom: 1.2rem; }
+    .cta-section p { color: rgba(224,224,224,0.65); max-width: 580px; margin: 0 auto 3rem; line-height: 1.85; }
+    .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .cta-contact-row { display: flex; justify-content: center; gap: 3rem; margin-top: 3rem; flex-wrap: wrap; }
+    .cta-contact-item { display: flex; align-items: center; gap: 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 1px; color: rgba(224,224,224,0.5); }
+    .cta-contact-item svg { width: 16px; height: 16px; fill: var(--accent); flex-shrink: 0; }
+    .cta-contact-item a { color: rgba(224,224,224,0.7); text-decoration: none; transition: color 0.2s; }
+    .cta-contact-item a:hover { color: #fff; }
+
+    /* FOOTER */
+    footer { background: #020202; border-top: 1px solid var(--border); padding: 4rem 4rem 2rem; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; }
+    .footer-logo { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; margin-bottom: 1.5rem; }
+    .footer-logo-icon { width: 40px; height: 40px; border: 1px solid rgba(0,123,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .footer-logo-icon svg { width: 20px; height: 20px; fill: var(--accent); }
+    .footer-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 3px; color: #fff; }
+    .footer-logo-text span { color: var(--accent); }
+    .footer-tagline { color: var(--text-muted); font-size: 0.88rem; line-height: 1.8; max-width: 280px; }
+    .footer-social { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
+    .footer-social a { width: 36px; height: 36px; border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+    .footer-social a svg { width: 15px; height: 15px; fill: var(--text-muted); transition: fill 0.2s; }
+    .footer-social a:hover { border-color: var(--accent); background: rgba(0,123,255,0.08); }
+    .footer-social a:hover svg { fill: var(--accent); }
+    .footer-col h5 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul li a { font-size: 0.88rem; color: rgba(224,224,224,0.55); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.5px; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+
+    /* FLOATING WA */
+    .wa-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 200; width: 58px; height: 58px; background: var(--wa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(37,213,102,0.35); transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; }
+    .wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,213,102,0.5); }
+    .wa-float svg { width: 28px; height: 28px; fill: #fff; }
+    .wa-pulse { position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(37,213,102,0.4); animation: waPulse 2s ease-out infinite; }
+    @keyframes waPulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .who-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .vm-grid { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: repeat(2, 1fr); }
+      .journey-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .journey-left { position: static; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: flex; }
+      .page-hero-content { padding: 3rem 1.5rem 4rem; }
+      .who-section, .vm-section, .values-section, .journey-section { padding: 4.5rem 1.5rem; }
+      .cta-section { padding: 5rem 1.5rem; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .page-hero h1 { font-size: 3rem; }
+      .values-grid { grid-template-columns: 1fr; }
+      .vm-card { padding: 2.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE OVERLAY + DRAWER -->
+<div class="mobile-drawer-overlay" id="drawerOverlay"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <ul class="mobile-nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html" class="active">About Us</a></li>
+    <li><a href="service.html">Services</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="mobile-drawer-cta">
+    <p class="mobile-drawer-label">Get in touch</p>
+    <div class="mobile-contact-item">
+      <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      <a href="tel:+2348038230989">+234 803 823 0989</a>
+    </div>
+    <div class="mobile-contact-item">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <a href="mailto:info@seabluehills.com">info@seabluehills.com</a>
+    </div>
+    <a class="mobile-drawer-btn" href="https://wa.me/2348038230989">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7l-8 4-8-4v-7l8-4.32z"/></svg>
+    </div>
+    <div class="nav-logo-text">
+      <div class="nav-logo-main">SEA-<span>BLUE</span> HILLS</div>
+      <div class="nav-logo-sub">Integrated Engineering</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html" class="active">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+  </ul>
+  <div class="nav-mobile-toggle" id="mobileToggle">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span style="color:#fff;">About Us</span>
+    </div>
+    <p class="page-hero-eyebrow">Our Story</p>
+    <h1>About<em>SEA-BLUE HILLS</em></h1>
+    <p class="page-hero-desc">Building tomorrow's infrastructure today — with integrity, innovation, and a deep commitment to Nigeria's growth.</p>
+    <div class="hero-btns">
+      <a class="btn-primary btn-wa" href="https://wa.me/2348038230989">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+        Partner With Us
+      </a>
+      <a class="btn-outline" href="#who-we-are">Our Story ↓</a>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Indigenous Engineering Firm</span>
+    <span class="ticker-item">Built for Nigeria</span>
+    <span class="ticker-item">Integrity & Innovation</span>
+    <span class="ticker-item">Infrastructure Excellence</span>
+    <span class="ticker-item">Strategic Build-Up Phase</span>
+    <span class="ticker-item">Future-Ready Solutions</span>
+    <span class="ticker-item">National Impact</span>
+    <span class="ticker-item">Partnership-Driven</span>
+    <span class="ticker-item">Indigenous Engineering Firm</span>
+    <span class="ticker-item">Built for Nigeria</span>
+    <span class="ticker-item">Integrity & Innovation</span>
+    <span class="ticker-item">Infrastructure Excellence</span>
+    <span class="ticker-item">Strategic Build-Up Phase</span>
+    <span class="ticker-item">Future-Ready Solutions</span>
+    <span class="ticker-item">National Impact</span>
+    <span class="ticker-item">Partnership-Driven</span>
+  </div>
+</div>
+
+<!-- WHO WE ARE -->
+<section class="who-section" id="who-we-are">
+  <div class="who-inner">
+    <div class="who-text reveal">
+      <p class="section-label">Who We Are</p>
+      <h2 class="section-title">A Forward-Looking, Indigenous Engineering Firm</h2>
+      <p>SEA-BLUE HILLS MULTICONCEPT is a forward-looking, indigenous engineering firm specializing in integrated solutions across Engineering Services, Contracts & Procurement, and Supply Chain Solutions.</p>
+      <p>We are currently in our strategic preparation phase — establishing robust systems, partnerships and processes as we transition into a full limited liability company structure. Our foundation is built on excellence, reliability and a genuine desire to contribute to Nigeria's infrastructure and industrial advancement.</p>
+    </div>
+    <div class="reveal">
+      <div class="pillars-card">
+        <h3>Our Core Pillars</h3>
+        <div class="pillar-item">
+          <span class="pillar-name">Engineering Services</span>
+          <span class="pillar-desc">Civil, structural, mechanical & infrastructure expertise from concept through to completion.</span>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-name">Contracts & Procurement</span>
+          <span class="pillar-desc">Tendering, strategic sourcing, supplier evaluation and full contract management.</span>
+        </div>
+        <div class="pillar-item">
+          <span class="pillar-name">Supply Chain Solutions</span>
+          <span class="pillar-desc">End-to-end logistics, materials sourcing and delivery optimisation across Nigeria.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION & MISSION -->
+<section class="vm-section">
+  <div class="reveal" style="text-align:center;">
+    <p class="section-label center">What Drives Us</p>
+    <h2 class="section-title center">Vision & Mission</h2>
+    <p class="section-sub center">Two commitments that define every decision we make and every project we take on.</p>
+  </div>
+  <div class="vm-grid">
+    <div class="vm-card reveal">
+      <div class="vm-big-letter">V</div>
+      <div class="vm-card-label">Our Vision</div>
+      <h2>Where We're Going</h2>
+      <p>To become one of Nigeria's most <strong>respected and globally recognized</strong> multi-concept engineering firms — delivering innovative, sustainable, and high-impact solutions that shape the future of infrastructure and industrial development across the continent.</p>
+    </div>
+    <div class="vm-card reveal">
+      <div class="vm-big-letter">M</div>
+      <div class="vm-card-label">Our Mission</div>
+      <h2>How We Get There</h2>
+      <p>To provide <strong>world-class engineering, procurement and supply chain services</strong> executed with integrity, precision, safety, timeliness and maximum value — building lasting partnerships and contributing meaningfully to Nigeria's progress.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CORE VALUES -->
+<section class="values-section">
+  <div class="values-inner">
+    <div class="reveal" style="text-align:center;">
+      <p class="section-label center">What We Stand For</p>
+      <h2 class="section-title center">Our Core Values</h2>
+      <p class="section-sub center">The principles that guide every project, every partnership, and every decision at SEA-BLUE HILLS.</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <div class="value-icon">⚖️</div>
+        <h4>Integrity</h4>
+        <span class="value-accent"></span>
+        <p>Honesty and full transparency in every action, communication and decision. No shortcuts, no hidden agendas.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">💡</div>
+        <h4>Innovation</h4>
+        <span class="value-accent"></span>
+        <p>Forward-thinking engineering solutions and continuous improvement in every process and methodology we apply.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">🏆</div>
+        <h4>Excellence</h4>
+        <span class="value-accent"></span>
+        <p>Quality that consistently exceeds expectations — applied to every deliverable, regardless of project scale.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="value-icon">🤝</div>
+        <h4>Partnership</h4>
+        <span class="value-accent"></span>
+        <p>Long-term, trust-based collaboration with clients, suppliers and communities built on shared goals and mutual respect.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY & CURRENT STATUS -->
+<section class="journey-section">
+  <div class="journey-inner">
+    <div class="journey-left reveal">
+      <p class="section-label">Where We Are</p>
+      <h2 class="section-title">Our Journey & Current Status</h2>
+      <p class="section-sub">We are building carefully and deliberately — laying foundations that will support lasting national impact.</p>
+      <div class="journey-status-badge">
+        <span class="status-dot"></span>
+        Strategic Build-Up Phase
+      </div>
+    </div>
+    <div class="journey-timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-tag">Foundation</div>
+          <h4>Concept & Vision Development</h4>
+          <p>SEA-BLUE HILLS MULTICONCEPT was conceptualized as an indigenous answer to Nigeria's growing need for integrated, reliable engineering and procurement partnerships — born from a deep understanding of the challenges facing local infrastructure development.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-tag">Systems & Structure</div>
+          <h4>Operational Framework Build-Out</h4>
+          <p>We are carefully establishing the systems, operational frameworks, and internal processes required to deliver consistently at an exceptional standard. Every structure is being built for scale and sustainability from day one.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-tag">Partnerships</div>
+          <h4>Strategic Alliances & Key Relationships</h4>
+          <p>We are actively securing key supplier partnerships, professional affiliations and industry relationships that will underpin our ability to deliver across all three service disciplines from the moment we go fully operational.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-tag">Legal Structure</div>
+          <h4>Transition to Limited Liability Company</h4>
+          <p>We are in the process of formal registration and transition into a full limited liability company structure — a commitment to permanence, accountability and professional standing that our future clients and partners deserve.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-tag">Now & Next</div>
+          <h4>Early Engagement — Clients, Investors & Collaborators</h4>
+          <p>While not yet in full commercial operations, we are already engaging with potential clients, investors and collaborators who share our vision. If you believe in Nigeria's potential and want to be part of building something meaningful, the conversation starts now.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-grid"></div>
+  <div class="cta-inner reveal">
+    <h2>Ready to Build the<br>Future Together?</h2>
+    <p>Whether you're a potential client, investor, or collaborator — we want to hear from you. Let's discuss how SEA-BLUE HILLS can serve your vision.</p>
+    <div class="cta-buttons">
+      <a class="btn-outline" href="mailto:info@seabluehills.com">Send Us a Message</a>
+      <a class="btn-primary btn-wa" href="https://wa.me/2348038230989">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+        Start the Conversation
+      </a>
+    </div>
+    <div class="cta-contact-row">
+      <div class="cta-contact-item">
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        <a href="tel:+2348038230989">+234 803 823 0989</a>
+      </div>
+      <div class="cta-contact-item">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <a href="mailto:info@seabluehills.com">info@seabluehills.com</a>
+      </div>
+      <div class="cta-contact-item">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Lagos, Nigeria
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-logo">
+        <div class="footer-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7l-8 4-8-4v-7l8-4.32z"/></svg></div>
+        <div class="footer-logo-text">SEA-<span>BLUE</span> HILLS</div>
+      </a>
+      <p class="footer-tagline">Nigeria's integrated engineering partner — delivering excellence in civil, structural, procurement, and supply chain services across the nation.</p>
+      <div class="footer-social">
+        <a href="#" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg></a>
+        <a href="https://wa.me/2348038230989" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg></a>
+        <a href="mailto:info@seabluehills.com" title="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="services.html">Engineering Services</a></li>
+        <li><a href="services.html">Contracts & Procurement</a></li>
+        <li><a href="services.html">Supply Chain Solutions</a></li>
+        <li><a href="index.html#process">Our Process</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#why">Why Us</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+2348038230989">+234 803 823 0989</a></li>
+        <li><a href="mailto:info@seabluehills.com">info@seabluehills.com</a></li>
+        <li><a href="https://wa.me/2348038230989">WhatsApp Chat</a></li>
+        <li><a href="#">Lagos, Nigeria</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 SEA-BLUE HILLS. All rights reserved.</p>
+    <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Sitemap</a></div>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a class="wa-float" title="Chat on WhatsApp" href="https://wa.me/2348038230989">
+  <div class="wa-pulse"></div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+</a>
+
+<script>
+  // NAVBAR
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+  navbar.classList.add('scrolled');
+
+  // MOBILE DRAWER
+  const toggle = document.getElementById('mobileToggle');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  function openDrawer() { drawer.classList.add('open'); overlay.classList.add('open'); toggle.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); toggle.classList.remove('active'); document.body.style.overflow = ''; }
+  toggle.addEventListener('click', () => { drawer.classList.contains('open') ? closeDrawer() : openDrawer(); });
+  overlay.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(link => link.addEventListener('click', closeDrawer));
+
+  // SCROLL REVEAL
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const siblings = [...entry.target.parentNode.querySelectorAll('.reveal')];
+        const idx = siblings.indexOf(entry.target);
+        setTimeout(() => entry.target.classList.add('visible'), idx * 100);
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
