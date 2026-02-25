@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — SEA-BLUE HILLS Integrated Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #001F3F;
+      --accent: #007BFF;
+      --accent-dark: #0056b3;
+      --accent-glow: rgba(0,123,255,0.25);
+      --bg: #000000;
+      --card-bg: #0d0d0d;
+      --border: #1a1a1a;
+      --border-light: #252525;
+      --text: #E0E0E0;
+      --text-muted: #808080;
+      --wa: #25D366;
+      --nav-h: 80px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* ===== NAVBAR ===== */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: var(--nav-h); padding: 0 4rem; display: flex; align-items: center; justify-content: space-between; transition: background 0.3s, border-color 0.3s; border-bottom: 1px solid transparent; }
+    nav.scrolled { background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); border-color: var(--border); }
+    .nav-logo { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+    .nav-logo-icon { width: 44px; height: 44px; border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
+    .nav-logo-icon::before { content: ''; position: absolute; inset: 3px; background: var(--accent); opacity: 0.1; }
+    .nav-logo-icon svg { width: 22px; height: 22px; fill: var(--accent); position: relative; }
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .nav-logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 3px; color: #fff; }
+    .nav-logo-main span { color: var(--accent); }
+    .nav-logo-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 0.6rem; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; position: relative; transition: color 0.2s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 100%; height: 1px; background: var(--accent); transition: right 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .nav-links a:hover::after, .nav-links a.active::after { right: 0; }
+    .nav-cta { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #fff !important; background: var(--accent); border: 1.5px solid var(--accent); padding: 0.6rem 1.5rem; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+    .nav-cta:hover { background: var(--accent-dark) !important; border-color: var(--accent-dark); transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+
+    /* HAMBURGER */
+    .nav-mobile-toggle { display: none; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; padding: 8px; z-index: 1100; width: 40px; height: 40px; border: 1px solid var(--border-light); background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); transition: border-color 0.2s; flex-shrink: 0; }
+    .nav-mobile-toggle:hover { border-color: var(--accent); }
+    .nav-mobile-toggle span { display: block; width: 20px; height: 1.5px; background: #fff; margin: 0 auto; transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), opacity 0.25s; transform-origin: center; }
+    .nav-mobile-toggle.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-mobile-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-mobile-toggle.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* MOBILE DRAWER */
+    .mobile-drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1040; opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+    .mobile-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .mobile-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(320px, 85vw); background: #080808; border-left: 1px solid var(--border); z-index: 1050; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.23,1,0.32,1); display: flex; flex-direction: column; padding: 6rem 2.5rem 3rem; box-shadow: -20px 0 60px rgba(0,0,0,0.6); overflow-y: auto; }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-nav-links { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .mobile-nav-links li { border-bottom: 1px solid var(--border); }
+    .mobile-nav-links a { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.2s, padding-left 0.2s; }
+    .mobile-nav-links a::after { content: '→'; color: var(--accent); font-size: 0.9rem; opacity: 0; transition: opacity 0.2s; }
+    .mobile-nav-links a:hover { color: #fff; padding-left: 0.5rem; }
+    .mobile-nav-links a:hover::after { opacity: 1; }
+    .mobile-drawer-cta { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .mobile-drawer-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .mobile-contact-item { display: flex; align-items: center; gap: 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; color: var(--text-muted); }
+    .mobile-contact-item svg { width: 14px; height: 14px; fill: var(--accent); flex-shrink: 0; }
+    .mobile-contact-item a { color: rgba(224,224,224,0.6); text-decoration: none; }
+    .mobile-drawer-btn { margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--wa); color: #fff; padding: 0.9rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+    .mobile-drawer-btn:hover { background: #1da851; }
+    .mobile-drawer-btn svg { width: 18px; height: 18px; fill: #fff; }
+
+    /* ===== PAGE HERO ===== */
+    .page-hero { padding-top: var(--nav-h); min-height: 48vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+    .page-hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,31,63,0.98) 0%, rgba(0,0,0,0.88) 65%, rgba(0,123,255,0.05) 100%), url('https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=1600&q=80') center/cover no-repeat; }
+    .page-hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,123,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,123,255,0.04) 1px, transparent 1px); background-size: 60px 60px; }
+    .page-hero-content { position: relative; z-index: 2; width: 100%; padding: 5rem 4rem; text-align: center; }
+    .breadcrumb { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.8rem; }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { color: var(--accent); }
+    .page-hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    .page-hero-eyebrow::before, .page-hero-eyebrow::after { content: ''; display: inline-block; width: 40px; height: 1px; background: var(--accent); }
+    .page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 6rem); line-height: 0.95; letter-spacing: 2px; color: #fff; margin-bottom: 1.5rem; }
+    .page-hero h1 em { font-style: normal; color: var(--accent); }
+    .page-hero-desc { font-size: 1.1rem; color: rgba(224,224,224,0.7); max-width: 560px; line-height: 1.85; margin: 0 auto; }
+
+    /* TICKER */
+    .ticker-wrap { background: var(--accent); padding: 0.75rem 0; overflow: hidden; white-space: nowrap; }
+    .ticker-track { display: inline-flex; animation: ticker 25s linear infinite; }
+    .ticker-track:hover { animation-play-state: paused; }
+    .ticker-item { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.9); padding: 0 3rem; display: inline-flex; align-items: center; gap: 1rem; }
+    .ticker-item::after { content: '✦'; font-size: 0.5rem; opacity: 0.6; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* COMMON */
+    .section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::before { content: ''; display: inline-block; width: 30px; height: 1px; background: var(--accent); }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; letter-spacing: 1px; color: #fff; margin-bottom: 1.5rem; }
+
+    /* ===== CONTACT SECTION ===== */
+    .contact-section { padding: 7rem 4rem; background: var(--bg); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1.6fr; gap: 6rem; align-items: start; }
+
+    /* INFO SIDE */
+    .contact-info { }
+    .contact-info p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 2.5rem; }
+    .contact-detail-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 3rem; }
+    .detail-item { display: flex; gap: 1.2rem; align-items: flex-start; padding: 1.4rem 0; border-bottom: 1px solid var(--border); }
+    .detail-item:first-child { border-top: 1px solid var(--border); }
+    .detail-icon { width: 40px; height: 40px; border: 1px solid rgba(0,123,255,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .detail-icon svg { width: 16px; height: 16px; fill: var(--accent); }
+    .detail-content { }
+    .detail-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+    .detail-value { font-size: 0.95rem; color: var(--text); }
+    .detail-value a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+    .detail-value a:hover { color: var(--accent); }
+    .detail-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; font-style: italic; }
+
+    /* QUICK CONTACT BUTTONS */
+    .quick-contact { display: flex; flex-direction: column; gap: 0.8rem; }
+    .quick-btn { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.4rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 1px solid var(--border-light); color: var(--text-muted); transition: all 0.25s; }
+    .quick-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .quick-btn.wa { border-color: rgba(37,213,102,0.25); color: #25D366; }
+    .quick-btn.wa:hover { background: rgba(37,213,102,0.08); border-color: #25D366; color: #25D366; transform: translateX(4px); }
+    .quick-btn.email { border-color: rgba(0,123,255,0.25); color: var(--accent); }
+    .quick-btn.email:hover { background: rgba(0,123,255,0.08); border-color: var(--accent); transform: translateX(4px); }
+    .quick-btn.phone { border-color: var(--border-light); }
+    .quick-btn.phone:hover { border-color: rgba(255,255,255,0.3); color: #fff; transform: translateX(4px); }
+
+    /* FORM SIDE */
+    .contact-form-wrap { background: var(--card-bg); border: 1px solid var(--border); padding: 3.5rem; }
+    .form-header { margin-bottom: 2.5rem; }
+    .form-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; color: #fff; margin-bottom: 0.4rem; }
+    .form-header p { font-size: 0.88rem; color: var(--text-muted); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+    .form-input, .form-textarea, .form-select { width: 100%; background: var(--bg); border: 1px solid var(--border-light); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 0.95rem; font-weight: 300; padding: 0.9rem 1rem; outline: none; transition: border-color 0.25s, background 0.25s; appearance: none; }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-muted); font-size: 0.9rem; }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent); background: #0a0a0a; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
+    .form-textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+    .form-select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23808080' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+    .form-select option { background: #111; color: #fff; }
+    .required-star { color: var(--accent); }
+    .form-submit { margin-top: 1.5rem; }
+    .btn-submit { width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.6rem; background: var(--accent); color: #fff; border: 2px solid var(--accent); padding: 1.1rem 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.2s, box-shadow 0.2s; }
+    .btn-submit:hover { background: var(--accent-dark); border-color: var(--accent-dark); transform: translateY(-2px); box-shadow: 0 10px 30px var(--accent-glow); }
+    .btn-submit svg { width: 18px; height: 18px; fill: currentColor; }
+    .form-note { margin-top: 1rem; font-size: 0.78rem; color: var(--text-muted); text-align: center; line-height: 1.6; }
+    .form-note a { color: var(--accent); text-decoration: none; }
+
+    /* SUCCESS MESSAGE */
+    .form-success { display: none; text-align: center; padding: 3rem 2rem; }
+    .form-success.show { display: block; }
+    .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .form-success h4 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; color: #fff; margin-bottom: 0.8rem; }
+    .form-success p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ===== MAP / LOCATION STRIP ===== */
+    .location-strip { background: var(--primary); border-top: 1px solid rgba(0,123,255,0.15); border-bottom: 1px solid rgba(0,123,255,0.15); padding: 5rem 4rem; position: relative; overflow: hidden; }
+    .location-strip::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0,123,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,123,255,0.04) 1px, transparent 1px); background-size: 50px 50px; }
+    .location-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .location-text h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 2px; color: #fff; margin-bottom: 1rem; }
+    .location-text p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.8; max-width: 420px; }
+    .location-details { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+    .loc-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .loc-icon { width: 36px; height: 36px; border: 1px solid rgba(0,123,255,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .loc-icon svg { width: 14px; height: 14px; fill: var(--accent); }
+    .loc-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+    .loc-text strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 0.1rem; }
+    .map-placeholder { background: var(--bg); border: 1px solid var(--border); height: 300px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; position: relative; overflow: hidden; }
+    .map-placeholder::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0,123,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,123,255,0.06) 1px, transparent 1px); background-size: 30px 30px; }
+    .map-pin { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; }
+    .map-pin-dot { width: 18px; height: 18px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 6px rgba(0,123,255,0.2); animation: mapPulse 2s infinite; }
+    @keyframes mapPulse { 0%,100%{box-shadow: 0 0 0 6px rgba(0,123,255,0.2);} 50%{box-shadow: 0 0 0 12px rgba(0,123,255,0.08);} }
+    .map-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+
+    /* CTA */
+    .cta-section { position: relative; background: var(--card-bg); border-top: 1px solid var(--border); padding: 6rem 4rem; overflow: hidden; text-align: center; }
+    .cta-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,123,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,123,255,0.025) 1px, transparent 1px); background-size: 50px 50px; }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); color: #fff; letter-spacing: 2px; margin-bottom: 1rem; }
+    .cta-section p { color: var(--text-muted); max-width: 540px; margin: 0 auto 2.5rem; line-height: 1.85; }
+    .cta-wa { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--wa); color: #fff; padding: 1rem 2.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.95rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: 2px solid var(--wa); transition: background 0.2s, transform 0.2s; }
+    .cta-wa:hover { background: #1da851; border-color: #1da851; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37,213,102,0.3); }
+    .cta-wa svg { width: 18px; height: 18px; fill: #fff; }
+
+    /* FOOTER */
+    footer { background: #020202; border-top: 1px solid var(--border); padding: 4rem 4rem 2rem; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; }
+    .footer-logo { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; margin-bottom: 1.5rem; }
+    .footer-logo-icon { width: 40px; height: 40px; border: 1px solid rgba(0,123,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .footer-logo-icon svg { width: 20px; height: 20px; fill: var(--accent); }
+    .footer-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 3px; color: #fff; }
+    .footer-logo-text span { color: var(--accent); }
+    .footer-tagline { color: var(--text-muted); font-size: 0.88rem; line-height: 1.8; max-width: 280px; }
+    .footer-social { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
+    .footer-social a { width: 36px; height: 36px; border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: border-color 0.2s, background 0.2s; }
+    .footer-social a svg { width: 15px; height: 15px; fill: var(--text-muted); transition: fill 0.2s; }
+    .footer-social a:hover { border-color: var(--accent); background: rgba(0,123,255,0.08); }
+    .footer-social a:hover svg { fill: var(--accent); }
+    .footer-col h5 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul li a { font-size: 0.88rem; color: rgba(224,224,224,0.55); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.5px; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+
+    /* FLOATING WA */
+    .wa-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 200; width: 58px; height: 58px; background: var(--wa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(37,213,102,0.35); transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; }
+    .wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,213,102,0.5); }
+    .wa-float svg { width: 28px; height: 28px; fill: #fff; }
+    .wa-pulse { position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(37,213,102,0.4); animation: waPulse 2s ease-out infinite; }
+    @keyframes waPulse { 0%{transform:scale(1);opacity:1;} 100%{transform:scale(1.5);opacity:0;} }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1100px) {
+      .contact-inner { grid-template-columns: 1fr; gap: 4rem; }
+      .location-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: flex; }
+      .page-hero-content { padding: 3rem 1.5rem 4rem; }
+      .contact-section, .location-strip, .cta-section { padding: 4.5rem 1.5rem; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .contact-form-wrap { padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .page-hero h1 { font-size: 2.8rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE OVERLAY + DRAWER -->
+<div class="mobile-drawer-overlay" id="drawerOverlay"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <ul class="mobile-nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="mobile-drawer-cta">
+    <p class="mobile-drawer-label">Get in touch</p>
+    <div class="mobile-contact-item">
+      <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+      <a href="tel:+2348038230989">+234 803 823 0989</a>
+    </div>
+    <div class="mobile-contact-item">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <a href="mailto:info@seabluehills.com">info@seabluehills.com</a>
+    </div>
+    <a class="mobile-drawer-btn" href="https://wa.me/2348038230989">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7l-8 4-8-4v-7l8-4.32z"/></svg>
+    </div>
+    <div class="nav-logo-text">
+      <div class="nav-logo-main">SEA-<span>BLUE</span> HILLS</div>
+      <div class="nav-logo-sub">Integrated Engineering</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+    <li><a href="contact.html" class="nav-cta active">Contact Us</a></li>
+  </ul>
+  <div class="nav-mobile-toggle" id="mobileToggle">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span style="color:#fff;">Contact</span>
+    </div>
+    <p class="page-hero-eyebrow">Reach Out</p>
+    <h1>Let's <em>Talk</em></h1>
+    <p class="page-hero-desc">We'd love to hear from you. Tell us about your project and let's explore how SEA-BLUE HILLS can make it happen.</p>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">+234 803 823 0989</span>
+    <span class="ticker-item">info@seabluehills.com</span>
+    <span class="ticker-item">Lagos, Nigeria</span>
+    <span class="ticker-item">WhatsApp Available</span>
+    <span class="ticker-item">Engineering Enquiries</span>
+    <span class="ticker-item">Procurement Support</span>
+    <span class="ticker-item">Supply Chain Consulting</span>
+    <span class="ticker-item">Project Partnerships</span>
+    <span class="ticker-item">+234 803 823 0989</span>
+    <span class="ticker-item">info@seabluehills.com</span>
+    <span class="ticker-item">Lagos, Nigeria</span>
+    <span class="ticker-item">WhatsApp Available</span>
+    <span class="ticker-item">Engineering Enquiries</span>
+    <span class="ticker-item">Procurement Support</span>
+    <span class="ticker-item">Supply Chain Consulting</span>
+    <span class="ticker-item">Project Partnerships</span>
+  </div>
+</div>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+  <div class="contact-inner">
+
+    <!-- LEFT: INFO -->
+    <div class="contact-info reveal">
+      <p class="section-label">Get In Touch</p>
+      <h2 class="section-title">We're Here<br>For Your Project</h2>
+      <p>Don't be shy — reach out today and let's discuss how SEA-BLUE HILLS MULTICONCEPT can support your engineering, procurement, or supply chain projects.</p>
+
+      <div class="contact-detail-list">
+        <div class="detail-item">
+          <div class="detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </div>
+          <div class="detail-content">
+            <div class="detail-label">Phone</div>
+            <div class="detail-value"><a href="tel:+2348038230989">+234 803 823 0989</a></div>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <div class="detail-content">
+            <div class="detail-label">Email</div>
+            <div class="detail-value"><a href="mailto:info@seabluehills.com">info@seabluehills.com</a></div>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          </div>
+          <div class="detail-content">
+            <div class="detail-label">Address</div>
+            <div class="detail-value">Lagos, Nigeria</div>
+            <div class="detail-note">Full address coming soon as we finalize our setup.</div>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          </div>
+          <div class="detail-content">
+            <div class="detail-label">Response Time</div>
+            <div class="detail-value">Within 24 hours</div>
+            <div class="detail-note">WhatsApp responses are typically much faster.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-contact">
+        <p class="section-label" style="margin-bottom:0.8rem;">Quick Contact</p>
+        <a class="quick-btn wa" href="https://wa.me/2348038230989" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+          Chat on WhatsApp — Fastest Reply
+        </a>
+        <a class="quick-btn email" href="mailto:info@seabluehills.com">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          Email Us Directly
+        </a>
+        <a class="quick-btn phone" href="tel:+2348038230989">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          Call +234 803 823 0989
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: FORM -->
+    <div class="contact-form-wrap reveal">
+      <div id="form-container">
+        <div class="form-header">
+          <h3>Send a Message</h3>
+          <p>Fill in the details below — your message will be sent directly to our WhatsApp for the fastest response.</p>
+        </div>
+        <form id="contact-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="first-name">First Name <span class="required-star">*</span></label>
+              <input class="form-input" id="first-name" type="text" placeholder="e.g. Chinedu" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="last-name">Last Name</label>
+              <input class="form-input" id="last-name" type="text" placeholder="e.g. Okeke" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="email">Email Address <span class="required-star">*</span></label>
+              <input class="form-input" id="email" type="email" placeholder="e.g. name@company.com" required />
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="phone">Phone / WhatsApp Number</label>
+              <input class="form-input" id="phone" type="tel" placeholder="e.g. +234 800 000 0000" />
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="service">Service of Interest</label>
+              <select class="form-select form-input" id="service">
+                <option value="" disabled selected>Select a service...</option>
+                <option value="Engineering Services">Engineering Services</option>
+                <option value="Contracts & Procurement">Contracts & Procurement</option>
+                <option value="Supply Chain Solutions">Supply Chain Solutions</option>
+                <option value="All / Integrated Solution">All / Integrated Solution</option>
+                <option value="General Enquiry">General Enquiry</option>
+                <option value="Partnership / Investment">Partnership / Investment</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="message">Your Message <span class="required-star">*</span></label>
+              <textarea class="form-textarea" id="message" placeholder="Briefly describe your project, requirements, or what you'd like to discuss..." required></textarea>
+            </div>
+          </div>
+          <div class="form-submit">
+            <button class="btn-submit" type="submit">
+              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+              Send via WhatsApp
+            </button>
+          </div>
+          <p class="form-note">By submitting, you'll be redirected to WhatsApp with your message pre-filled. No data is stored on this website. Have questions? <a href="mailto:info@seabluehills.com">Email us instead.</a></p>
+        </form>
+      </div>
+      <div class="form-success" id="form-success">
+        <div class="success-icon">✅</div>
+        <h4>Message Ready!</h4>
+        <p>WhatsApp has opened with your message pre-filled. Just hit send and our team will get back to you as soon as possible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION STRIP -->
+<div class="location-strip">
+  <div class="location-inner">
+    <div class="location-text reveal">
+      <p class="section-label">Find Us</p>
+      <h2>Based in Lagos,<br>Operating Nationwide</h2>
+      <p>Our base of operations is Lagos, Nigeria — but our supplier networks, project capabilities and delivery reach extend across the entire country.</p>
+      <div class="location-details">
+        <div class="loc-item">
+          <div class="loc-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+          <div class="loc-text"><strong>Headquarters</strong>Lagos, Nigeria — full address to be confirmed upon company registration.</div>
+        </div>
+        <div class="loc-item">
+          <div class="loc-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+          <div class="loc-text"><strong>Service Coverage</strong>Lagos · Abuja · Port Harcourt · Kano · and all major commercial hubs across Nigeria.</div>
+        </div>
+      </div>
+    </div>
+    <div class="map-placeholder reveal">
+      <div class="map-pin">
+        <div class="map-pin-dot"></div>
+        <span class="map-label">Lagos, Nigeria</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA STRIP -->
+<section class="cta-section">
+  <div class="cta-grid"></div>
+  <div class="cta-inner reveal">
+    <h2>Prefer to Talk Directly?</h2>
+    <p>Skip the form and reach us instantly on WhatsApp. Our team is ready to answer your questions and discuss your project needs.</p>
+    <a class="cta-wa" href="https://wa.me/2348038230989" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+      Open WhatsApp Now
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-logo">
+        <div class="footer-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L20 8.5v7l-8 4-8-4v-7l8-4.32z"/></svg></div>
+        <div class="footer-logo-text">SEA-<span>BLUE</span> HILLS</div>
+      </a>
+      <p class="footer-tagline">Nigeria's integrated engineering partner — delivering excellence in civil, structural, procurement, and supply chain services across the nation.</p>
+      <div class="footer-social">
+        <a href="#" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg></a>
+        <a href="https://wa.me/2348038230989" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg></a>
+        <a href="mailto:info@seabluehills.com" title="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="services.html">Engineering Services</a></li>
+        <li><a href="services.html">Contracts & Procurement</a></li>
+        <li><a href="services.html">Supply Chain Solutions</a></li>
+        <li><a href="index.html#process">Our Process</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#why">Why Us</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+2348038230989">+234 803 823 0989</a></li>
+        <li><a href="mailto:info@seabluehills.com">info@seabluehills.com</a></li>
+        <li><a href="https://wa.me/2348038230989">WhatsApp Chat</a></li>
+        <li><a href="#">Lagos, Nigeria</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 SEA-BLUE HILLS. All rights reserved.</p>
+    <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Sitemap</a></div>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a class="wa-float" title="Chat on WhatsApp" href="https://wa.me/2348038230989">
+  <div class="wa-pulse"></div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.477 2 2 6.477 2 11.99c0 1.762.46 3.411 1.265 4.845L2 22l5.332-1.397A9.966 9.966 0 0011.99 22c5.513 0 9.99-4.477 9.99-9.99S17.503 2 11.99 2z"/></svg>
+</a>
+
+<script>
+  // NAVBAR
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+  navbar.classList.add('scrolled');
+
+  // MOBILE DRAWER
+  const toggle = document.getElementById('mobileToggle');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  function openDrawer() { drawer.classList.add('open'); overlay.classList.add('open'); toggle.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); toggle.classList.remove('active'); document.body.style.overflow = ''; }
+  toggle.addEventListener('click', () => { drawer.classList.contains('open') ? closeDrawer() : openDrawer(); });
+  overlay.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(link => link.addEventListener('click', closeDrawer));
+
+  // SCROLL REVEAL
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const siblings = [...entry.target.parentNode.querySelectorAll('.reveal')];
+        const idx = siblings.indexOf(entry.target);
+        setTimeout(() => entry.target.classList.add('visible'), idx * 100);
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // WHATSAPP FORM SUBMIT
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const firstName = document.getElementById('first-name').value.trim();
+    const lastName  = document.getElementById('last-name').value.trim() || '';
+    const email     = document.getElementById('email').value.trim();
+    const phone     = document.getElementById('phone').value.trim() || 'Not provided';
+    const service   = document.getElementById('service').value || 'Not specified';
+    const message   = document.getElementById('message').value.trim();
+    const fullName  = [firstName, lastName].filter(Boolean).join(' ') || 'Visitor';
+
+    const text =
+      `Hello SEA-BLUE HILLS Team,%0A%0A` +
+      `I'd like to get in touch regarding your services.%0A%0A` +
+      `*Name:* ${encodeURIComponent(fullName)}%0A` +
+      `*Email:* ${encodeURIComponent(email)}%0A` +
+      `*Phone:* ${encodeURIComponent(phone)}%0A` +
+      `*Service of Interest:* ${encodeURIComponent(service)}%0A%0A` +
+      `*Message:*%0A${encodeURIComponent(message)}%0A%0A` +
+      `Sent from the website contact form.`;
+
+    window.open(`https://wa.me/2348038230989?text=${text}`, '_blank');
+
+    // Show success state
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('form-success').classList.add('show');
+    this.reset();
+  });
+</script>
+</body>
+</html>
